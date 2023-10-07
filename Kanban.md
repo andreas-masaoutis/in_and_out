@@ -22,13 +22,13 @@ Task
 
 ### Tasks
 
-- TASK_NAME: Requirements and solution <br/><br/> TASK_DESCRIPTION: The objective is to gather all the requirements and come up with a proposed architectural solution to be implemented. Capture everything in a document<br/><br/> COMMENTS:  <br/><br/>  TASK_ID: r_n_a <br/><br/> REFERENCES_STORY: Arch_spike  
 
 ### In Progress
 
 
 ### Done ✓
 
+- TASK_NAME: Requirements and solution <br/><br/> TASK_DESCRIPTION: The objective is to gather all the requirements and come up with a proposed architectural solution to be implemented. Capture everything in a document<br/><br/> COMMENTS:  <br/><br/>  TASK_ID: r_n_s <br/><br/> REFERENCES_STORY: Arch_spike  
 - TASK_NAME: Create_first_story <br/><br/> TASK_DESCRIPTION: USE the info from the problem description and write the first story  <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: first_story  <br/><br/> REFERENCES_STORY: tech1  
 - TASK_NAME: Update_readme <br/><br/> TASK_DESCRIPTION: Collect all the necessary info from the problem description in the README <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: initial_readme  <br/><br/> REFERENCES_STORY: tech1  
 - TASK_NAME: Setup_kanban <br/><br/> TASK_DESCRIPTION: To setup the Kanban board for the project <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: kanban1  <br/><br/> REFERENCES_STORY: tech1  
