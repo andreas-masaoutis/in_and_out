@@ -1,0 +1,19 @@
+version : '3.8'
+
+services:
+
+  solution:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /in_and_out/main
+    command: ["python", "solution.py"]
+    # command: ["/bin/bash"]
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 1024M
+    volumes:
+      - ./data:/in_and_out/data
+    tty: true

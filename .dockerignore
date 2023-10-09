@@ -1,0 +1,12 @@
+## Itself is not necessary in container
+.dockerignore
+
+## Git related files
+.git
+.gitignore
+
+## VSCodium settings
+.vscode
+
+## the data will come through the volume
+data/
