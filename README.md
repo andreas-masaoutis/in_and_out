@@ -12,8 +12,8 @@ The data come as a csv file.
 
 #### Questions:
 1. For each employee, for the month of February, calculate the following:
-    - total_time_in_office_per_employee: the net amount of hours spent in the office.
-    - unique_days_in_office_per_employee: the number of unique calendar days the employee was present in the office.
+    - total_time_in_office: the net amount of hours spent in the office.
+    - unique_days_in_office: the number of unique calendar days the employee was present in the office.
     - average_employee_time_per_day: the total time spent in the office divided by the unique days the employee was present in the office.
     - employee_ranking_average_time: the ranking of the employees along average time per day spent in the office.
 
