@@ -17,11 +17,11 @@ Task
 
 ### User Stories
 
-- STORY_NAME: Architectural spike <br/><br/> STORY_DESCRIPTION: We need to create a first iteration in order to test the viability of proposed architectures. We should deliver a response to  question 1.1 (total_time_in_office_per_employee). This story has many tasks that cover the whole range of tasks from specifying requirements to deployment. <br/><br/> STATUS: Running  <br/><br/>  STORY_ID Arch_spike:  
+- STORY_NAME: Architectural spike <br/><br/> STORY_DESCRIPTION: We need to create a first iteration in order to test the viability of proposed architectures. We should deliver a response to  question 1.1 (total_time_in_office_per_employee). This story has many tasks that cover the whole range of tasks from specifying requirements to deployment. <br/><br/> STATUS: Running  <br/><br/>  STORY_ID: Arch_spike:  
 - STORY_NAME: Bootstrap_the_Project <br/><br/> STORY_DESCRIPTION: All the necessary first steps in order to initiate the project <br/><br/> STATUS: Completed <br/><br/>  STORY_ID: tech1  
 
 ### Tasks
-
+- TASK_NAME: Docker deployment <br/><br/> TASK_DESCRIPTION: Create a set of docker containers for deployment <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: docker1 <br/><br/> REFERENCES_STORY: Arch_spike 
 
 ### In Progress
 
