@@ -25,20 +25,14 @@ The data come as a csv file.
 
     eg. IN 8, OUT 12, IN 15, OUT 18, (IN next day) these count as two sessions from 8 to 12 and from 15 to 18
 
-3. (Optional) From the perspective of the office, assuming that the 25 registered employees denote the maximum capacity, what is the utilisation percent? Report the min, median, and max, taking care of outliers:
-    - per weekday
-    - per hour
+3. (Optional) From the perspective of the office, assuming that the 25 registered employees denote the maximum capacity, how many people joined the office every day? Report the weekday, and the daily min_presence, median_presence, and max_presence in the office for every of the seven (7) weekdays.
 
 #### Deliverables:
-1. For question 1, return a CSV file with user_id, total_time_in_office_per_employee, unique_days_in_office_per_employee, average_employee_time_per_day, employee_ranking_average_time, for each employee
+1. For question 1, return a CSV file with user_id, total_time_in_office, unique_days_in_office, average_employee_time_per_day, employee_ranking_average_time, for each employee
 
-2. For question 2, return a CSV file, with user_id and session_length
+2. For question 2, return a CSV file, with user_id and session_length, having a single entry user the user that had the longest work session
 
-3. And for question 3, return two (2) CSV files
-    - One with weekday, min, median, max of utilisation percent, with data for each of the seven (7) days of the week.
-    - And another, with hour, min, median, max of utilisation percent, with data for each of the twenty-four (24) hours of the day.
-
-4. A report on data quality issues, with discarded values, or modified values, etc. Specific form TBD
+3. And for question 3, return a CSV file with weekday, min_presence, median_presence, and max_presence of number of persons that visited the office, with data for each of the seven (7) days of the week.
 
 ### What you will find in this repo
 TBD
