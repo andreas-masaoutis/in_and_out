@@ -6,7 +6,6 @@ REFACTOR!!!!!!
 
 import re
 import csv
-from dateutil import parser
 from datetime import datetime
 
 NUMBER_OF_EMPLOYEES = 25
@@ -58,7 +57,7 @@ def rule3(astring):
     format = "2023-02-15T09:56:31.000Z"
     """
 
-    the_datetime = parser.parse(astring)
+    the_datetime = datetime.strptime(astring, "%Y-%m-%dT%H:%M:%S.%fZ")
 
     if isinstance(the_datetime, datetime) and len(astring) == 24:
         return True
@@ -143,9 +142,9 @@ def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
                     "GATE_IN" : [],
                     "GATE_OUT" : []
                 }
-                raw_data_dict_repr[user_id][event_type].append(parser.parse(event_time))
+                raw_data_dict_repr[user_id][event_type].append( datetime.strptime(event_time, "%Y-%m-%dT%H:%M:%S.%fZ") )
             else:
-                raw_data_dict_repr[user_id][event_type].append(parser.parse(event_time))
+                raw_data_dict_repr[user_id][event_type].append( datetime.strptime(event_time, "%Y-%m-%dT%H:%M:%S.%fZ") )
 
         if not rule4(raw_data_dict_repr, NUMBER_OF_EMPLOYEES):
             print("Houston, we have a problem with the NUMBER_OF_EMPLOYEES")
