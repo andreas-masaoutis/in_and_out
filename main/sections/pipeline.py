@@ -170,7 +170,8 @@ def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
             for event_type in raw_data_dict_repr[user_id]:
                 for event_time in raw_data_dict_repr[user_id][event_type]:
                     clean_writer.writerow([
-                        user_id,event_type,event_time.isoformat(sep = 'T', timespec = 'milliseconds').replace('+00:00', 'Z')
+                        user_id,event_type,event_time.isoformat(sep = 'T', timespec = 'milliseconds')+"Z"
+                        ## the +"Z" for the zulu time is a cheap hack - not all datasets will have this time zone
  
                         ])
 
@@ -186,7 +187,8 @@ def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
             for event_type in raw_data_dict_repr[user_id]:
                 for event_time in raw_data_dict_repr[user_id][event_type]:
                     bad_writer.writerow([
-                        user_id,event_type,event_time.isoformat(sep = 'T', timespec = 'milliseconds').replace('+00:00', 'Z')
+                        user_id,event_type,event_time.isoformat(sep = 'T', timespec = 'milliseconds')+"Z"
+                        ## the +"Z" for the zulu time is a cheap hack - not all datasets will have this time zone 
 
                         ])
 
