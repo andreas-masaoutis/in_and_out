@@ -22,13 +22,18 @@ Task
 
 ### Tasks
 
+- TASK_NAME: Guards <br/><br/> TASK_DESCRIPTION: The code only covers a happy path with no exception handling - cover for all cases <br/><br/> COMMENTS: Not only the solution but the integration tests too <br/><br/>  TASK_ID: guards <br/><br/> REFERENCES_STORY: Arch_spike  
+- TASK_NAME: Logging <br/><br/> TASK_DESCRIPTION: Until now necessary info for the user is just printed on screen - Redirect everything to a log <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: logging <br/><br/> REFERENCES_STORY: Arch_spike  
+- TASK_NAME: Pipeline refactoring <br/><br/> TASK_DESCRIPTION: We need to move ahead in order to answer all questions otherwise the refactoring should be part of the Pipeline task <br/><br/> COMMENTS: Consider creating a Class that will handle both data and logic <br/><br/>  TASK_ID: pipeline_refactor <br/><br/> REFERENCES_STORY: Arch_spike  
 
 ### In Progress
 
-- TASK_NAME: Acceptance test <br/><br/> TASK_DESCRIPTION: Write the acceptance tests for this story that responds to question 1.1 <br/><br/> COMMENTS: In order to do so we have to modify the solution we have created right before <br/><br/>  TASK_ID: acceptance_test <br/><br/> REFERENCES_STORY: Arch_spike  
+- TASK_NAME: Analytics <br/><br/> TASK_DESCRIPTION: Here we develop the analytics infrastrucure for responding to question 1.1 <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: analytics1 <br/><br/> REFERENCES_STORY: Arch_spike  
 
 ### Done ✓
 
+- TASK_NAME: Pipeline <br/><br/> TASK_DESCRIPTION: We develop the pipeline that produces the clean data <br/><br/> COMMENTS: THERE IS NEED FOR HEAVY REFACTORING!! Also unit tests will be added afterwards <br/><br/>  TASK_ID: pipeline1 <br/><br/> REFERENCES_STORY: Arch_spike  
+- TASK_NAME: Acceptance test <br/><br/> TASK_DESCRIPTION: Write the acceptance tests for this story that responds to question 1.1 <br/><br/> COMMENTS: In order to do so we have to modify the solution we have created right before <br/><br/>  TASK_ID: acceptance_test <br/><br/> REFERENCES_STORY: Arch_spike  
 - TASK_NAME: Docker deployment <br/><br/> TASK_DESCRIPTION: Create a set of docker containers for deployment <br/><br/> COMMENTS: We got just one container in order to avoid the trouble of communication between separate processes - at least for now <br/><br/>  TASK_ID: docker1 <br/><br/> REFERENCES_STORY: Arch_spike  
 - TASK_NAME: Requirements and solution <br/><br/> TASK_DESCRIPTION: The objective is to gather all the requirements and come up with a proposed architectural solution to be implemented. Capture everything in a document<br/><br/> COMMENTS:  <br/><br/>  TASK_ID: r_n_s <br/><br/> REFERENCES_STORY: Arch_spike  
 - TASK_NAME: Create_first_story <br/><br/> TASK_DESCRIPTION: USE the info from the problem description and write the first story  <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: first_story  <br/><br/> REFERENCES_STORY: tech1  
