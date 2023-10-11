@@ -105,6 +105,13 @@ def rule5(adict):
 
     good_data_user_id = all_user_ids - bad_data_user_id
 
+    ## It is preferable to have the keys always sorted, 
+    ## so that clean data do not change among executions - same data different sort
+    good_data_user_id = list(good_data_user_id)
+    bad_data_user_id = list(bad_data_user_id)
+    good_data_user_id.sort()
+    bad_data_user_id.sort()
+    
     return (good_data_user_id, bad_data_user_id)
                 
     
@@ -150,8 +157,6 @@ def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
             print("Houston, we have a problem with the NUMBER_OF_EMPLOYEES")
 
         good_data_user_id, bad_data_user_id = rule5(raw_data_dict_repr)
-
-        print(good_data_user_id)
 
 
 
