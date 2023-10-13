@@ -32,6 +32,8 @@ for scenario in individual_scenarios:
     desired_response_folder = os.path.join(individual_scenario, "desired_response/")
     actual_response_folder = os.path.join(individual_scenario, "actual_response/")
     actual_clean_data_folder = os.path.join(individual_scenario, "actual_clean_data/")
+    actual_bad_data_folder = os.path.join(individual_scenario, "actual_bad_data/")
+    
 
     ## Remove actual responses from last run
     for afile in os.listdir(actual_clean_data_folder):
@@ -46,7 +48,7 @@ for scenario in individual_scenarios:
     for root, dirs, files in os.walk(raw_data_folder):
         raw_data_file = os.path.join(root, files[0])
         solution.the_solution(
-            raw_data_file, actual_clean_data_folder, actual_response_folder
+            raw_data_file, actual_clean_data_folder, actual_bad_data_folder, actual_response_folder
         )
 
         ## Compare the actual with the desired data
@@ -69,11 +71,7 @@ for scenario in individual_scenarios:
                 difflib.unified_diff(
                     actual_response_contents,
                     desired_response_contents,
-                    fromfile="",
-                    tofile="",
-                    fromfiledate="",
-                    tofiledate="",
-                    n=2,
+                    n=0,
                     lineterm="\n",
                 )
             )
@@ -88,5 +86,5 @@ for scenario in individual_scenarios:
             else:
                 print(
                     f"For the scenario {scenario}, and for file {file_name}, ",
-                    "THERE IS A PERFECT MATCH betwen actual and desired",
+                    "THERE IS A PERFECT MATCH between actual and desired",
                 )
