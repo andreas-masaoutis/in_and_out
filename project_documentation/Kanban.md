@@ -26,18 +26,19 @@ Task
 
 ### Tasks
 
-- TASK_NAME: Acceptance test 2 <br/><br/> TASK_DESCRIPTION: Now that the solution is ready we need to expand, finalise and solve any problems with the acceptance tests <br/><br/> COMMENTS:  We need them to work for the subsequent refactoring <br/><br/>  TASK_ID: acceptance_test2 <br/><br/> REFERENCES_STORY: System_refactor  
-- TASK_NAME: Modularise solution <br/><br/> TASK_DESCRIPTION: For both pipeline and analytics we should get some of the lower level stuff to separate modules <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: modularise <br/><br/> REFERENCES_STORY: System_refactor  
 - TASK_NAME: Unit testing <br/><br/> TASK_DESCRIPTION: Once the modules are done we should write the unit tests <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: unittest <br/><br/> REFERENCES_STORY: System_refactor  
 - TASK_NAME: Guards <br/><br/> TASK_DESCRIPTION: The code only covers a happy path with no exception handling - cover for all cases <br/><br/> COMMENTS: Not only the solution but the integration tests too <br/><br/>  TASK_ID: guards <br/><br/> REFERENCES_STORY: System_refactor  
 - TASK_NAME: Formatting <br/><br/> TASK_DESCRIPTION: Use black and pylint across the code base <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: Formatting1 <br/><br/> REFERENCES_STORY: System_refactor  
+- TASK_NAME: Fix docker volumes <br/><br/> TASK_DESCRIPTION: It seems that the docker volume is not properly set up  <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: docker_volumes <br/><br/> REFERENCES_STORY: Bug_fix  
 
 ### In Progress
 
-- TASK_NAME: Data journey<br/><br/> TASK_DESCRIPTION: We need to examine the data journey from end to end - the column names, the data types, etc, and verify that they conform to the specification <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: data_journey <br/><br/> REFERENCES_STORY: System_refactor  
+- TASK_NAME: Modularise solution <br/><br/> TASK_DESCRIPTION: For both pipeline and analytics we should get some of the lower level stuff to separate modules <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: modularise <br/><br/> REFERENCES_STORY: System_refactor  
 
 ### Done ✓
 
+- TASK_NAME: Acceptance test 2 <br/><br/> TASK_DESCRIPTION: Now that the solution is ready we need to expand, finalise and solve any problems with the acceptance tests <br/><br/> COMMENTS:  We need them to work for the subsequent refactoring <br/><br/>  TASK_ID: acceptance_test2 <br/><br/> REFERENCES_STORY: System_refactor  
+- TASK_NAME: Data journey<br/><br/> TASK_DESCRIPTION: We need to examine the data journey from end to end - the column names, the data types, etc, and verify that they conform to the specification <br/><br/> COMMENTS:  <br/><br/>  TASK_ID: data_journey <br/><br/> REFERENCES_STORY: System_refactor  
 - TASK_NAME: Analytics <br/><br/> TASK_DESCRIPTION: Here we develop the analytics infrastructure for responding to question 1.1 <br/><br/> COMMENTS: Actually we built the analysis for all the answers yet there is a lot to be done in maintainability etc <br/><br/>  TASK_ID: analytics1 <br/><br/> REFERENCES_STORY: Arch_spike  
 - TASK_NAME: Pipeline <br/><br/> TASK_DESCRIPTION: We develop the pipeline that produces the clean data <br/><br/> COMMENTS: THERE IS NEED FOR HEAVY REFACTORING!! Also unit tests will be added afterwards <br/><br/>  TASK_ID: pipeline1 <br/><br/> REFERENCES_STORY: Arch_spike  
 - TASK_NAME: Acceptance test <br/><br/> TASK_DESCRIPTION: Write the acceptance tests for this story that responds to question 1.1 <br/><br/> COMMENTS: In order to do so we have to modify the solution we have created right before <br/><br/>  TASK_ID: acceptance_test <br/><br/> REFERENCES_STORY: Arch_spike  
