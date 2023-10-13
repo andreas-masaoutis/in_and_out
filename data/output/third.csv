@@ -1,4 +1,4 @@
-weekday,min_office_presence,avg_office_presence,max_office_presence
+weekday,min_employee_presence,avg_employee_presence,max_employee_presence
 Monday,14,19.25,21
 Tuesday,20,21.0,22
 Wednesday,17,19.0,21

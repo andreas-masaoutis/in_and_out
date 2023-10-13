@@ -16,19 +16,14 @@ daily_duration = """
             , event_time
             , lag ( event_time, 1, 0) OVER ( PARTITION BY user_id ORDER BY event_time )
 
-            ,  Cast (( 
-
-                JulianDay(
+            , strftime('%s',
                         event_time
                         )
                 -
-                JulianDay(
+             strftime('%s',
                         lag ( event_time, 1, 0) OVER ( PARTITION BY user_id ORDER BY event_time ) 
                         ) 
-                 
-                
-                
-                ) * 24 * 60 As REAL) AS the_dif
+                AS the_dif
             
             FROM
                 in_out
@@ -83,9 +78,9 @@ days_in_office = """
 first_answer_query = """
     SELECT
         daily_duration.user_id
-        , total_time_in_office
+        , total_time_in_office / 3600 AS total_time_in_office
         , total_days_in_office
-        , total_time_in_office / total_days_in_office AS average_per_day
+        , time( (total_time_in_office / total_days_in_office) , 'unixepoch')  AS average_per_day
         ,    RANK () OVER ( ORDER BY (total_time_in_office / total_days_in_office) DESC ) ValRank
     FROM
         daily_duration
@@ -148,7 +143,7 @@ session_vs_break = """
         *
         , CASE
             WHEN event_type IS 'GATE_OUT' THEN 'session'
-            WHEN event_type IS 'GATE_IN' AND the_dif < 120 THEN 'session'
+            WHEN event_type IS 'GATE_IN' AND the_dif < 7200 THEN 'session'
             ELSE 'break'
         END AS session_identification
     FROM
@@ -158,20 +153,11 @@ session_vs_break = """
             , event_time
             , lag ( event_time, 1, 0) OVER ( PARTITION BY user_id ORDER BY event_time ) AS lagged_time
 
-            ,  Cast (( 
-
-                JulianDay(
-                        event_time
-                        )
+            , strftime('%s', event_time)
                 -
-                JulianDay(
-                        lag ( event_time, 1, 0) OVER ( PARTITION BY user_id ORDER BY event_time ) 
-                        ) 
-                 
+             strftime('%s', lag ( event_time, 1, 0) OVER ( PARTITION BY user_id ORDER BY event_time ) )
                 
-                
-                ) * 24 * 60 As REAL) AS the_dif
-            
+                AS the_dif
             
             FROM
                 in_out
@@ -206,7 +192,7 @@ second_answer_query = """
 
     SELECT
         user_id
-        , sum(the_dif) AS session_length
+        , time (sum(the_dif),'unixepoch') AS session_length
          
     FROM
         rankings
@@ -216,6 +202,8 @@ second_answer_query = """
         user_id, sequence_grouping
     ORDER BY
         session_length DESC
+    LIMIT 
+        10
 
 """
 
@@ -265,7 +253,7 @@ def analytics(clean_data_folder, output_folder):
     with open( output_folder + "first.csv", "w") as first_answer:
         print('Analytics says: This is answer1') 
         first_answer_writer = csv.writer(first_answer)
-        header = ['user_id','total_time_in_office','total_days_in_office', 'average_time_per_day', 'rank_average_time']
+        header = ['user_id','time','days', 'average_per_day', 'rank']
         first_answer_writer.writerow(header)
         for line in answer1_result:
             first_answer_writer.writerow(line)
@@ -286,7 +274,7 @@ def analytics(clean_data_folder, output_folder):
         print('Analytics says: This is answer3') 
 
         third_answer_writer = csv.writer(third_answer)
-        header = ['weekday','min_office_presence','avg_office_presence', 'max_office_presence' ]
+        header = ['weekday','min_employee_presence','avg_employee_presence', 'max_employee_presence' ]
         third_answer_writer.writerow(header)
         for line in answer3_result:
             third_answer_writer.writerow(line)
