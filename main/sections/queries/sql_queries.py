@@ -12,7 +12,10 @@ The basis for all queries are the cleaned data in the table "in_out":
 Each query produces extra data; take a look at each individual one for details
 """
 
+from solution_config import START_DATE, END_DATE, MINIMAL_BREAK_IN_SEC
 
+
+  
 ############################
 ### Intermediate queries ###
 ############################
@@ -44,8 +47,8 @@ AS WITH lagged_eventsCTE AS
                                                                                  ORDER BY event_time)
                                                                                  ) AS event_type_duration
    FROM in_out
-   WHERE event_time >= '2023-02-01'
-     AND event_time <= '2023-02-29' )
+   WHERE event_time >= '{}'
+     AND event_time <= '{}' )
 SELECT user_id,
        sum(event_type_duration) AS total_time_in_office
 FROM lagged_eventsCTE
@@ -53,7 +56,7 @@ WHERE event_type IS 'GATE_OUT'
 GROUP BY user_id
 ORDER BY total_time_in_office DESC
 
-"""
+""".format(START_DATE, END_DATE)
 
 
 DAYS_IN_OFFICE = """
@@ -74,10 +77,10 @@ FROM
   (SELECT DISTINCT user_id ,
                    substr(event_time, 1, 10) AS days_in_office
    FROM in_out
-   WHERE event_time >= '2023-02-01'
-     AND event_time <='2023-02-29' )
+   WHERE event_time >= '{}'
+     AND event_time <= '{}' )
 GROUP BY user_id
-"""
+""".format(START_DATE, END_DATE)
 
 
 SESSION_VS_BREAK = """
@@ -101,7 +104,7 @@ SELECT * ,
        CASE
            WHEN event_type IS 'GATE_OUT' THEN 'session'
            WHEN event_type IS 'GATE_IN'
-                AND the_dif < 7200 THEN 'session'
+                AND the_dif < {} THEN 'session'
            ELSE 'break'
        END AS session_identification
 FROM
@@ -113,9 +116,9 @@ FROM
                                       strftime('%s', event_time) - strftime('%s', lag (event_time, 1, 0) OVER (PARTITION BY user_id
                                                                                                                ORDER BY event_time)) AS the_dif
    FROM in_out
-   WHERE event_time >= '2023-02-01'
-     AND event_time <='2023-02-29') lagged
-"""
+   WHERE event_time >= '{}'
+     AND event_time <= '{}') lagged
+""".format(MINIMAL_BREAK_IN_SEC, START_DATE, END_DATE)
 
 
 ############################
@@ -230,10 +233,10 @@ FROM
                                ELSE 'Saturday'
                            END AS weekday
       FROM in_out
-      WHERE event_time >= '2023-02-01'
-        AND event_time <='2023-02-29' )
+      WHERE event_time >= '{}'
+        AND event_time <= '{}' )
    GROUP BY weekday,
             event_date)
 GROUP BY weekday
 ORDER BY weekday_int
-"""
+""".format(START_DATE, END_DATE)
