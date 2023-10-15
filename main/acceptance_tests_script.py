@@ -33,7 +33,6 @@ for scenario in individual_scenarios:
     actual_response_folder = os.path.join(individual_scenario, "actual_response/")
     actual_clean_data_folder = os.path.join(individual_scenario, "actual_clean_data/")
     actual_bad_data_folder = os.path.join(individual_scenario, "actual_bad_data/")
-    
 
     ## Remove actual responses from last run
     for afile in os.listdir(actual_clean_data_folder):
@@ -48,7 +47,10 @@ for scenario in individual_scenarios:
     for root, dirs, files in os.walk(raw_data_folder):
         raw_data_file = os.path.join(root, files[0])
         solution.the_solution(
-            raw_data_file, actual_clean_data_folder, actual_bad_data_folder, actual_response_folder
+            raw_data_file,
+            actual_clean_data_folder,
+            actual_bad_data_folder,
+            actual_response_folder,
         )
 
         ## Compare the actual with the desired data
@@ -79,12 +81,10 @@ for scenario in individual_scenarios:
             ## result is a list of strings, that represent differences between the two files
             if result:
                 print(
-                    f"For the scenario {scenario}, and for file {file_name}, ",
-                    "there are the following differences between actual and desired outputs",
+                    f"SCENARIO: {scenario}, FILE: {file_name}, SOME DIFFERENCES "
                 )
                 pprint(result)
             else:
                 print(
-                    f"For the scenario {scenario}, and for file {file_name}, ",
-                    "THERE IS A PERFECT MATCH between actual and desired",
+                    f"SCENARIO: {scenario}, FILE: {file_name}, PERFECT MATCH BETWEEN ACTUAL AND DESIRED "
                 )
