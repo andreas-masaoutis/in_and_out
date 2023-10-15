@@ -25,7 +25,7 @@ import re
 from datetime import datetime
 
 
-def check_user_id_format(astring):
+def check_user_id_format(astring:str) -> bool:
     """
     Return True if string conforms to standard, False otherwise
 
@@ -37,44 +37,55 @@ def check_user_id_format(astring):
     return bool(pattern.fullmatch(astring))
 
 
-def check_event_type(astring, allowed_values):
+def check_event_type(astring:str, allowed_values:list[str,str]) -> bool:
     """
     Return True if string in allowed string, False otherwise
 
     allowed in our case = ["GATE_IN","GATE_OUT"]
     """
-    return bool(astring in allowed_values)
+    try:
+        return bool(astring in allowed_values)
+    except TypeError as e:
+        raise SystemExit("There has been an internal problem calling function 'check_event_type' in file pipeline.py; function was called with the wrong type for variable 'allowed_values'. \nThe solution will now terminate")
 
 
-def fix_lowercase_entry_type(astring):
+def fix_lowercase_entry_type(astring:str) -> bool:
     """
-    Fix the lower case issue
+    Fix the lower case issue.
+    If you cannot fix it, leave it as is
     """
     fixes = {"gate_in": "GATE_IN", "gate_out": "GATE_OUT"}
+    try:
+        return fixes[astring]
+    except KeyError as e:
+        return astring
 
-    return fixes[astring]
 
-
-def check_event_time(astring):
+def check_event_time(astring:str) -> bool:
     """
     Check if string represents datetime, of certain length
 
     format = "2023-02-15T09:56:31.000Z"
     """
+    try:
+        the_datetime = datetime.strptime(astring, "%Y-%m-%dT%H:%M:%S.%fZ")
+        return bool(isinstance(the_datetime, datetime) and len(astring) == 24)
+    except ValueError as e:
+        return False
 
-    the_datetime = datetime.strptime(astring, "%Y-%m-%dT%H:%M:%S.%fZ")
 
-    return bool(isinstance(the_datetime, datetime) and len(astring) == 24)
-
-
-def check_employee_number(adict, desired_number_of_keys):
+def check_employee_number(adict:dict, desired_number_of_keys:int) -> bool:
     """
     For a dictionary, verify that 1. dict not empty 2. up to as many keys
     """
-    return bool(0 < len(adict.keys()) <= desired_number_of_keys)
+    if not isinstance(desired_number_of_keys, int):
+        print("The variable NUMBER_OF_EMPLOYEES set in the solution_config.py file, has to be an integer")
+        raise SystemExit("The solution will now terminate")
+    else:
+        return bool(0 < len(adict.keys()) <= desired_number_of_keys)
 
 
-def check_entry_exit_sequence_and_no_duplicates(adict):
+def check_entry_exit_sequence_and_no_duplicates(adict:dict)-> tuple:
     """
     Verify that for each employee:
     1. there are no duplicates

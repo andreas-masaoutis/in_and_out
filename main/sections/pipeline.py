@@ -7,7 +7,7 @@ from .readers_n_writers import readers_n_writers
 
 NUMBER_OF_EMPLOYEES = 25
 
-def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
+def pipeline(raw_data_file:str, clean_data_folder:str, bad_data_folder:str) -> None:
     """Read raw data, run quality checks, fix problems, and write clean/bad data
     
     Note: bad_data is determined at two stages: First when checking individual lines,
@@ -19,7 +19,12 @@ def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
     syntactically_correct_data = []
     bad_data = []
 
-    lines_raw_data = readers_n_writers.initial_reader(raw_data_file)
+    try:
+        lines_raw_data = readers_n_writers.initial_reader(raw_data_file)
+    except Exception as e:
+        print("The pipeline could not read the raw data.")
+        print(f"The exception raised was: {e}") 
+        raise SystemExit("The solution will now terminate")
 
     ##########################################################
     #### DATA CHECKS PART 1 - Individual field formatting ####
@@ -35,7 +40,6 @@ def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
 
         ## The checks on individual data rows
         if not rules_n_fixes.check_user_id_format(user_id):
-            print(user_id, event_type, event_time)
             bad_data.append(line)
             break
 
@@ -44,12 +48,10 @@ def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
             event_type = rules_n_fixes.fix_lowercase_entry_type(event_type)
 
             if not rules_n_fixes.check_event_type(event_type, ["GATE_IN", "GATE_OUT"]):
-                print(user_id, event_type, event_time)
                 bad_data.append(line)
                 break
 
         if not rules_n_fixes.check_event_time(event_time):
-            print(user_id, event_type, event_time)
             bad_data.append(line)
             break
 
@@ -94,17 +96,30 @@ def pipeline(raw_data_file, clean_data_folder, bad_data_folder):
     del bad_data_dict, bad_data
 
 
-    readers_n_writers.final_writer(
+    try:
+        readers_n_writers.final_writer(
         clean_data_folder + "clean_data.csv",
         final_clean_data,
         ["user_id", "event_type", "event_time"],
-    )
+        )
+    except Exception as e:
+        print("The pipeline could not write the clean data.")
+        print(f"The exception raised was: {e}") 
+        raise SystemExit("The solution will now terminate")
+
     del final_clean_data
 
 
-    readers_n_writers.final_writer(
+
+    try:
+        readers_n_writers.final_writer(
         bad_data_folder + "bad_data.csv",
         final_bad_data,
         ["user_id", "event_type", "event_time"],
-    )
+        )
+    except Exception as e:
+        print("The pipeline could not write the bad data.")
+        print(f"The exception raised was: {e}") 
+        raise SystemExit("The solution will now terminate")
+    
     del final_bad_data

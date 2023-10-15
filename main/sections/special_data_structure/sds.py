@@ -37,7 +37,7 @@ another that transforms an SDS to a list
 from datetime import datetime
 
 
-def create_sds(array_of_csv_lines):
+def create_sds(array_of_csv_lines:list[list[str,str,str]]) -> dict:
     """Read a collection of lines from a CSV and return a Special Data Structure
 
     Args:
@@ -87,7 +87,7 @@ def create_sds(array_of_csv_lines):
     return sds
 
 
-def sds_to_list(a_special_dict):
+def sds_to_list(a_special_dict:dict) -> list[list[str,str,str]]:
     """Read a Special Data Structure and return an array of potential CSV lines
 
     Args:

@@ -5,7 +5,7 @@
 import csv
 
 
-def initial_reader(a_file_path):
+def initial_reader(a_file_path:str) -> None:
     """Read a CSV and return a list of lines
     
     Args:
@@ -39,7 +39,7 @@ def initial_reader(a_file_path):
     return line_collection
 
 
-def final_writer(a_file_path, an_iterator, a_header):
+def final_writer(a_file_path:str, an_iterator:list[list[str, str, str]], a_header:list[str, str, str] ) -> None:
     """Given a list of list, you'll get a CSV file
     
     Args:
@@ -50,7 +50,8 @@ def final_writer(a_file_path, an_iterator, a_header):
             ['user_id','event_type','event_time'],
             ...
         ]
-        A list of values for the CSV header
+        A list of strings for the CSV header
+        ['user_id','event_type','event_time']
 
     Returns:
         A CSV file at the filepath provides, with the header as first line and the list content as rows

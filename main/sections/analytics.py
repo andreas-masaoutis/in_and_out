@@ -7,12 +7,17 @@ from .readers_n_writers import readers_n_writers
 
 
 
-
-def analytics(clean_data_folder, output_folder):
+def analytics(clean_data_folder:str, output_folder:str) -> None:
     """Read and load the clean data, perform SQL queries, and write final CSV files"""
 
     ### Read the clean data ###
-    clean_data = readers_n_writers.initial_reader( clean_data_folder + "clean_data.csv" )
+    try:
+        clean_data = readers_n_writers.initial_reader( clean_data_folder + "clean_data.csv" )
+    except Exception as e:
+        print("The analytics could not read the clean data.")
+        print(f"The exception raised was: {e}") 
+        raise SystemExit("The solution will now terminate")
+
 
     ### Connect to DB and load the data  ###
     con = sqlite3.connect(":memory:")
@@ -40,29 +45,44 @@ def analytics(clean_data_folder, output_folder):
 
     ###### Question 1 ######
     answer1_result = cur.execute(sql_queries.FIRST_ANSWER_QUERY)
-    readers_n_writers.final_writer(
-        output_folder + "first.csv",
-        answer1_result,
-        ["user_id", "time", "days", "average_per_day", "rank"],
-    )
+    try:
+        readers_n_writers.final_writer(
+            output_folder + "first.csv",
+            answer1_result,
+            ["user_id", "time", "days", "average_per_day", "rank"],
+        )
+    except Exception as e:
+        print("The analytics could not write answer1.")
+        print(f"The exception raised was: {e}") 
+        raise SystemExit("The solution will now terminate")
 
     ###### Question 2 ######
     answer2_result = cur.execute(sql_queries.SECOND_ANSWER_QUERY)
-    readers_n_writers.final_writer(
-        output_folder + "second.csv", answer2_result, ["user_id", "session_length"]
-    )
+    try:
+        readers_n_writers.final_writer(
+            output_folder + "second.csv", answer2_result, ["user_id", "session_length"]
+        )
+    except Exception as e:
+        print("The analytics could not write answer2.")
+        print(f"The exception raised was: {e}") 
+        raise SystemExit("The solution will now terminate")
 
     ###### Question 3 ######
     answer3_result = cur.execute(sql_queries.THIRD_ANSWER_QUERY)
-    readers_n_writers.final_writer(
-        output_folder + "third.csv",
-        answer3_result,
-        [
-            "weekday",
-            "min_employee_presence",
-            "avg_employee_presence",
-            "max_employee_presence",
-        ],
-    )
+    try:
+        readers_n_writers.final_writer(
+            output_folder + "third.csv",
+            answer3_result,
+            [
+                "weekday",
+                "min_employee_presence",
+                "avg_employee_presence",
+                "max_employee_presence",
+            ],
+        )
+    except Exception as e:
+        print("The analytics could not write answer2.")
+        print(f"The exception raised was: {e}") 
+        raise SystemExit("The solution will now terminate")
     
     con.close()
