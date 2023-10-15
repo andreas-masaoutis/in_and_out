@@ -72,6 +72,19 @@ In both cases:
         - either a warning message if something went wrong
         - or a verification that the solution is complete along with info on how much space was used, and how much time it took.
 
+### Errors, bad data and logging 
+
+In case there is any problem and a warning message appears on-screen, you can take a look at the file logger.log found at 
+
+>    ~ / in_and_out / main /
+
+that contains more detailed information for the error.
+
+Be advised that whenever the raw data contain badly formatted data, the offending data is placed on the file
+
+> ~ / in_and_out / data / bad_data / bad_data.csv
+
+for further inspection, and it is not considered for the computation of the solution. It is therefore good practice to inspect the logger file to make sure that everything ran smooth.
 
 ## Configuration
 

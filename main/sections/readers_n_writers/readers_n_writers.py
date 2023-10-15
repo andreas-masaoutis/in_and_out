@@ -3,6 +3,9 @@
 """
 
 import csv
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def initial_reader(a_file_path:str) -> None:
@@ -19,22 +22,27 @@ def initial_reader(a_file_path:str) -> None:
             ...
         ]
     Raises:
-
+        SystemExit - if the file cannot be processed, just kill it
     """
 
     line_collection = []
+    try:
+        with open(a_file_path, "r") as the_input_file:
+            the_input_file_reader = csv.reader(the_input_file)
+            ## Get rid of the header
+            next(the_input_file_reader)
 
-    with open(a_file_path, "r") as the_input_file:
-        the_input_file_reader = csv.reader(the_input_file)
-        ## Get rid of the header
-        next(the_input_file_reader)
+            for line in the_input_file_reader:
+                user_id = line[0]
+                event_type = line[1]
+                event_time = line[2].strip("\n")
 
-        for line in the_input_file_reader:
-            user_id = line[0]
-            event_type = line[1]
-            event_time = line[2].strip("\n")
-
-            line_collection.append([user_id, event_type, event_time])
+                line_collection.append([user_id, event_type, event_time])
+    except Exception as e:
+        logging.error("Exception occurred", exc_info=True)
+        print("There was some error. See the logs for details.")
+        print(f"The exception raised was: {e}")
+        raise SystemExit("The solution will now terminate")
 
     return line_collection
 
@@ -57,12 +65,17 @@ def final_writer(a_file_path:str, an_iterator:list[list[str, str, str]], a_heade
         A CSV file at the filepath provides, with the header as first line and the list content as rows
 
     Raises:
-        
-
+        SystemExit - if the file cannot be opened, just kill the process
     """
 
-    with open(a_file_path, "w") as the_output_file:
-        the_output_file_writer = csv.writer(the_output_file)
-        the_output_file_writer.writerow(a_header)
-        for the_line in an_iterator:
-            the_output_file_writer.writerow(the_line)
+    try:
+        with open(a_file_path, "w") as the_output_file:
+            the_output_file_writer = csv.writer(the_output_file)
+            the_output_file_writer.writerow(a_header)
+            for the_line in an_iterator:
+                the_output_file_writer.writerow(the_line)
+    except Exception as e:
+        logging.error("Exception occurred", exc_info=True)
+        print("There was some error. See the logs for details.")
+        print(f"The exception raised was: {e}")
+        raise SystemExit("The solution will now terminate")

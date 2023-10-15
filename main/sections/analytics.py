@@ -4,20 +4,19 @@ import csv
 import sqlite3
 from .queries import sql_queries
 from .readers_n_writers import readers_n_writers
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-
-def analytics(clean_data_folder:str, output_folder:str) -> None:
+def analytics(clean_data_folder: str, output_folder: str) -> None:
     """Read and load the clean data, perform SQL queries, and write final CSV files"""
 
-    ### Read the clean data ###
-    try:
-        clean_data = readers_n_writers.initial_reader( clean_data_folder + "clean_data.csv" )
-    except Exception as e:
-        print("The analytics could not read the clean data.")
-        print(f"The exception raised was: {e}") 
-        raise SystemExit("The solution will now terminate")
+    logger.info("I am the analytics: I am in")
 
+    ### Read the clean data ###
+
+    clean_data = readers_n_writers.initial_reader(clean_data_folder + "clean_data.csv")
 
     ### Connect to DB and load the data  ###
     con = sqlite3.connect(":memory:")
@@ -32,6 +31,8 @@ def analytics(clean_data_folder:str, output_folder:str) -> None:
     ## Not needed any more
     del clean_data
 
+    logger.info("I am the analytics: I have set up the DB")
+
     #########################################
     ### Intermediate queries - no returns ###
     #########################################
@@ -45,44 +46,34 @@ def analytics(clean_data_folder:str, output_folder:str) -> None:
 
     ###### Question 1 ######
     answer1_result = cur.execute(sql_queries.FIRST_ANSWER_QUERY)
-    try:
-        readers_n_writers.final_writer(
-            output_folder + "first.csv",
-            answer1_result,
-            ["user_id", "time", "days", "average_per_day", "rank"],
-        )
-    except Exception as e:
-        print("The analytics could not write answer1.")
-        print(f"The exception raised was: {e}") 
-        raise SystemExit("The solution will now terminate")
+    readers_n_writers.final_writer(
+        output_folder + "first.csv",
+        answer1_result,
+        ["user_id", "time", "days", "average_per_day", "rank"],
+    )
+    logger.info("I am the analytics: I have produced the first answer")
 
     ###### Question 2 ######
     answer2_result = cur.execute(sql_queries.SECOND_ANSWER_QUERY)
-    try:
-        readers_n_writers.final_writer(
-            output_folder + "second.csv", answer2_result, ["user_id", "session_length"]
-        )
-    except Exception as e:
-        print("The analytics could not write answer2.")
-        print(f"The exception raised was: {e}") 
-        raise SystemExit("The solution will now terminate")
+    readers_n_writers.final_writer(
+        output_folder + "second.csv", answer2_result, ["user_id", "session_length"]
+    )
+    logger.info("I am the analytics: I have produced the second answer")
 
     ###### Question 3 ######
     answer3_result = cur.execute(sql_queries.THIRD_ANSWER_QUERY)
-    try:
-        readers_n_writers.final_writer(
-            output_folder + "third.csv",
-            answer3_result,
-            [
-                "weekday",
-                "min_employee_presence",
-                "avg_employee_presence",
-                "max_employee_presence",
-            ],
-        )
-    except Exception as e:
-        print("The analytics could not write answer2.")
-        print(f"The exception raised was: {e}") 
-        raise SystemExit("The solution will now terminate")
-    
+    readers_n_writers.final_writer(
+        output_folder + "third.csv",
+        answer3_result,
+        [
+            "weekday",
+            "min_employee_presence",
+            "avg_employee_presence",
+            "max_employee_presence",
+        ],
+    )
+    logger.info("I am the analytics: I have produced the third answer")
+
     con.close()
+
+    logger.info("I am the analytics: I am out")

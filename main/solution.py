@@ -8,10 +8,7 @@ The clean_data csv file is like a port between the two.
 """
 import tracemalloc
 from time import perf_counter
-
-
 from sections import pipeline, analytics
-
 from solution_config import (
     raw_data_file,
     clean_data_folder,
@@ -20,7 +17,9 @@ from solution_config import (
 )
 
 
-def the_solution(raw_data_file:str, clean_data_folder:str, bad_data_folder:str, output_folder:str) -> None:
+def the_solution(
+    raw_data_file: str, clean_data_folder: str, bad_data_folder: str, output_folder: str
+) -> None:
     """Piecing together the pipeline and the analytics"""
 
     pipeline.pipeline(raw_data_file, clean_data_folder, bad_data_folder)
@@ -29,6 +28,15 @@ def the_solution(raw_data_file:str, clean_data_folder:str, bad_data_folder:str, 
 
 
 if __name__ == "__main__":
+    import logging.config
+
+    logging.basicConfig(
+        level=logging.DEBUG,
+        filename="logger.log",
+        filemode="w",
+        format="%(name)s - %(levelname)s - %(message)s - %(asctime)s",
+    )
+
     tracemalloc.start()
     t1_start = perf_counter()
 
@@ -37,6 +45,6 @@ if __name__ == "__main__":
     print("Solution says: I am done")
 
     current, peak = tracemalloc.get_traced_memory()
-    print(f"Memory usage - Current: {current / 1000000} MB, Peak {peak / 1000000} MB" )
+    print(f"Memory usage - Current: {current / 1000000} MB, Peak {peak / 1000000} MB")
     t1_stop = perf_counter()
-    print(f"Time for the solution in seconds: {t1_stop-t1_start}" )
+    print(f"Time for the solution in seconds: {t1_stop-t1_start}")
