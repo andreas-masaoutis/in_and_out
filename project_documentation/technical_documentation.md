@@ -1,4 +1,4 @@
-# in and out
+# in and out: Technical Documentation
 
 ### Requirements
 
@@ -31,7 +31,7 @@ We also need a process to ingest the data; a data pipeline. Since we are using o
 
 In order to increase the modularity of the solution we will keep apart, in two separate module, the rules for cleaning the data and the queries. For every data problem we identify in the EDA phase, we will establish a data transformation that modifies the data and fixes the problem. In a similar manner, all SQL queries will be written and tested and kept separately from SQLite DB.
 
-The core will be the SQLite DB, wrapped around an API that should ingest the prepared data, accept SQL queries, and return the solution CSV files requested.
+The core is SQLite DB, wrapped around an API that should ingest the prepared data, accept SQL queries, and return the solution CSV files requested.
 |  |   |  |  |  |
 |:----:|:----:|:----:|:----:|:-----:|
 | Raw data &rarr;  | Data Pipeline &rarr;  | Clean Data &rarr; | Analytics Engine &rarr; | CSV results |
@@ -39,32 +39,79 @@ The core will be the SQLite DB, wrapped around an API that should ingest the pre
 | | Data quality rules | | SQL queries | |
 
 
+From the top down:
+- The solution.py is the main execution point. It imports the two modules that are: 
+    - The pipeline, and the analytics engine. Below them, there are the four building blocks:
+        1. the readers and writers, effectively a wrapper around the csv module, that converts CSV to a list of rows and vice versa
+        2. the sds, a dictionary formatted in a way to hold our specific data, and it functions as a replacement for a dataframe
+        3. the implementation of the business rules for the data and some fixes for data points that are not well formatted by still fixable, like gate_in to GATE_IN
+        4. the SQL queries that feed the analytics part
+
 ### Test plan
 
-Once we have a general architectural model, we can decide how to test the solution:
-
-- Unit tests for:
+We have implemented unit tests for:
     1. The data quality rules
     2. The SQL queries
-    3. The analytics engine API
-Each element is a transformation and, at least in theory, it should be easy to test. For example, replacing all lowercase event types can be directly tested. Similar for the queries
+Each element is a transformation and, at least in theory, it should be easy to test. For example, replacing all lowercase event types can be directly tested. Similar for the queries.
 
-- Integration test for:
-    1. The whole pipeline
-    2. The whole analytics engine
-Here we want to make sure that all the pieces of each section work together without problems. The data pipeline should transform the raw data into cleaned data, and the analytics engine should transform the cleaned data into correct results. Here we assume that the unit tests make sure that all the individual parts work as expected.
+For the two (2) modules that we have written unit tests, queries and rules_n_fixes, you can find the test suite inside the module. Execute with 
+
+> python test_rules_n_fixes.py
+
+or navigate to the module's folder and execute
+
+> python -m unittest discover -v // -v for verbose with more info on the tests
+
 
 - Acceptance tests for:
     1. Well, the whole solution.
 Given a set of raw data, there should be a corresponding set of response CSv files.
 
-Testing will be implemented with the unittest library.
+For the acceptance test we have a script 
+
+ > ~ / in_and_out / main / acceptance_tests_script.py
+
+ that reads test scenarios, computes the solution for each input and compares the actual output with the desired.
+
+ Navigate to the folder, execute the script with
+
+ > python acceptance_tests_script.py 
+ 
+ and you will get the results in the form:
+
+> SCENARIO: bad_event_type, FILE: second.csv, PERFECT MATCH BETWEEN ACTUAL AND DESIRED 
+> SCENARIO: bad_event_type, FILE: first.csv, PERFECT MATCH BETWEEN ACTUAL AND DESIRED 
+> SCENARIO: bad_event_type, FILE: third.csv, PERFECT MATCH BETWEEN ACTUAL AND DESIRED 
+
+ There are currently 8 scenarios. To register more, you simply have to replicate the folder structure decide what the raw should look like, and what the desired responses should be for the given raw data. Execute the script and you'll get the report, as above, indicating if there is a match, or whether and where are the differences. 
+
 
 ### Deployment
 
-We use docker for deploying the analytics solution. Although we will not have any other requirements other than Standard Library, it provides the same execution environment across machines.
+We use docker for deploying the solution. Although we will not have any other requirements other than Standard Library, it provides the same execution environment across machines.
 
 A user is still able to execute the solution and get the results with their system installed Python, and it should be just fine, unless some really rare bug occurring.
+
+In the docker-compose file found here:
+
+ > ~ / in_and_out / docker-compose.yml
+
+ there are two options for the execution command
+>    command: ["python", "solution.py"]
+
+or
+
+>    command: ["/bin/bash"]
+
+Use the second option (default) to run the solution via docker (for details see user documentation)
+
+Use the first to create a container that you can then enter with 
+
+>   sudo docker exec -it in_and_out_solution_1 /bin/bash
+
+Since we use a volume to get all the code base inside the container, you can navigate around and execute all the commands for running the solution and its tests.
+
+**Please read the user documentation for detailed instructions on how to execute the solution and its config**
 
 ### Available Data
 
