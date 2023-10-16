@@ -5,7 +5,12 @@ We have implemented tests for two (2) of the queries
 import unittest
 import csv
 import sqlite3
-from sql_queries import NET_OFFICE_HOURS, DAYS_IN_OFFICE
+from sql_queries import (
+    NET_OFFICE_HOURS,
+    DAYS_IN_OFFICE,
+    SESSION_VS_BREAK,
+    FOURTH_ANSWER_QUERY,
+)
 
 
 class QueriesTest(unittest.TestCase):
@@ -36,6 +41,7 @@ class QueriesTest(unittest.TestCase):
 
         self.cur.execute(NET_OFFICE_HOURS)
         self.cur.execute(DAYS_IN_OFFICE)
+        self.cur.execute(SESSION_VS_BREAK)
 
     def test_net_office_hours(self):
         """Correct execution for net hours spent in the office by each employee"""
@@ -61,6 +67,21 @@ class QueriesTest(unittest.TestCase):
         self.desired_results = [
             ("user1g90-49ff-4512-b1c1-ee92ec9680ab", 5),
             ("user281f-79de-4937-ba87-aec8e7e731af", 1),
+        ]
+
+        self.assertEqual(self.actual_results, self.desired_results)
+
+    def test_hourly_occupancy(self):
+        """Correct execution for hourly occupancy per weekday"""
+
+        self.actual_results = self.cur.execute(FOURTH_ANSWER_QUERY).fetchall()
+
+        self.desired_results = [
+            ("Monday", 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0),
+            ("Tuesday", 0, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0),
+            ("Wednesday", 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0),
+            ("Thursday", 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0),
+            ("Friday", 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0),
         ]
 
         self.assertEqual(self.actual_results, self.desired_results)
