@@ -27,6 +27,8 @@ The data come as a csv file.
 
 3. (Optional) From the perspective of the office, assuming that the 25 registered employees denote the maximum capacity, how many people joined the office every day? Report the weekday, and the daily min_presence, median_presence, and max_presence in the office for every of the seven (7) weekdays.
 
+4. From the perspective of the office, what was the maximum number of employees that joined the office every day, for each hourly band between 07:00 and 22:00?  Report the weekday, the hourly bands, and the max presence in the office for every of the seven (7) weekdays.
+
 ### Deliverables:
 1. For question 1, return a CSV file with user_id, total_time_in_office, unique_days_in_office, average_employee_time_per_day, employee_ranking_average_time, for each employee
 
