@@ -74,6 +74,33 @@ def analytics(clean_data_folder: str, output_folder: str) -> None:
     )
     logger.info("I am the analytics: I have produced the third answer")
 
+    ###### Question 4 ######
+    answer4_result = cur.execute(sql_queries.FOURTH_ANSWER_QUERY)
+    readers_n_writers.final_writer(
+        output_folder + "fourth.csv",
+        answer4_result,
+        [
+            "weekday",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+        ],
+    )
+    logger.info("I am the analytics: I have produced the fourth answer")
+
     con.close()
 
     logger.info("I am the analytics: I am out")
