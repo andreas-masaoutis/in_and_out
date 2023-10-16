@@ -7,8 +7,8 @@ services:
       context: .
       dockerfile: Dockerfile
     working_dir: /in_and_out/main
-    # command: ["python", "solution.py"]
-    command: ["/bin/bash"]
+    command: ["python", "solution.py"]
+    # command: ["/bin/bash"]
     deploy:
       resources:
         limits:
