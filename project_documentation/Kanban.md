@@ -27,16 +27,16 @@ Task
 
 ### Tasks
 
-- TASK_NAME: Write tests for query <br/><br/> TASK_DESCRIPTION: We should write both the unit and the acceptance tests for the task and story <br/><br/> COMMENTS: <br/><br/>  TASK_ID: test_occupancy <br/><br/> REFERENCES_STORY: Hourly_occupancy  
-- TASK_NAME: Write query <br/><br/> TASK_DESCRIPTION: Write the query for the hourly occupancy rates <br/><br/> COMMENTS: <br/><br/>  TASK_ID: query_occupancy <br/><br/> REFERENCES_STORY: Hourly_occupancy  
-- TASK_NAME: Integraete query <br/><br/> TASK_DESCRIPTION: Once the query and its tests are ready we want to integrate the query into the solution <br/><br/> COMMENTS: <br/><br/>  TASK_ID: integrate_query <br/><br/> REFERENCES_STORY: Hourly_occupancy  
-- TASK_NAME: Update docs <br/><br/> TASK_DESCRIPTION: Once the query is tested and implemented we should update the documentation <br/><br/> COMMENTS: <br/><br/>  TASK_ID: docs_occupancy <br/><br/> REFERENCES_STORY: Hourly_occupancy  
 
 ### In Progress
 
 
 ### Done ✓
 
+- TASK_NAME: Update docs <br/><br/> TASK_DESCRIPTION: Once the query is tested and implemented we should update the documentation <br/><br/> COMMENTS: <br/><br/>  TASK_ID: docs_occupancy <br/><br/> REFERENCES_STORY: Hourly_occupancy  
+- TASK_NAME: Integrate query <br/><br/> TASK_DESCRIPTION: Once the query and its tests are ready we want to integrate the query into the solution <br/><br/> COMMENTS: <br/><br/>  TASK_ID: integrate_query <br/><br/> REFERENCES_STORY: Hourly_occupancy  
+- TASK_NAME: Write query <br/><br/> TASK_DESCRIPTION: Write the query for the hourly occupancy rates <br/><br/> COMMENTS: <br/><br/>  TASK_ID: query_occupancy <br/><br/> REFERENCES_STORY: Hourly_occupancy  
+- TASK_NAME: Write tests for query <br/><br/> TASK_DESCRIPTION: We should write both the unit and the acceptance tests for the task and story <br/><br/> COMMENTS: <br/><br/>  TASK_ID: test_occupancy <br/><br/> REFERENCES_STORY: Hourly_occupancy  
 - TASK_NAME: Technical documentation <br/><br/> TASK_DESCRIPTION: Update the technical documentation with all the latest changes <br/><br/> COMMENTS: <br/><br/>  TASK_ID: technical_docs <br/><br/> REFERENCES_STORY: System_refactor  
 - TASK_NAME: Create logs <br/><br/> TASK_DESCRIPTION: Identify the places where info has to be collected from and gather everything in one file <br/><br/> COMMENTS: <br/><br/>  TASK_ID: logs1 <br/><br/> REFERENCES_STORY: Logging  
 - TASK_NAME: User documentation <br/><br/> TASK_DESCRIPTION: Write the user documentation <br/><br/> COMMENTS: Mostly how to execute the solution<br/><br/>  TASK_ID: user_docs1 <br/><br/> REFERENCES_STORY: User_docs  
