@@ -4,6 +4,9 @@ The main objective of this piece of software is to transform a CSV file, with en
 
 So. let's get started
 
+## OS
+The solution has been developed and tested on Ubuntu 22.04.2 with root privileges. You might experience difference when using the command line to execute the solution, but it should work as advertised when using Docker
+
 ## Where you can find the computed solution
 The main outcome is a set of three files with answers to the three questions posed. You can find these answers in the folder 
 
