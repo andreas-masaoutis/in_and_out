@@ -103,11 +103,11 @@ or
 
 >    command: ["/bin/bash"]
 
-Use the second option (default) to run the solution via docker (for details see user documentation)
+Use the first option (default) to run the solution via docker (for details see user documentation)
 
-Use the first to create a container that you can then enter with 
+Use the second to create a container that you can then enter with 
 
->   sudo docker exec -it in_and_out_solution_1 /bin/bash
+>   (sudo) docker exec -it in_and_out_solution_1 /bin/bash
 
 Since we use a volume to get all the code base inside the container, you can navigate around and execute all the commands for running the solution and its tests.
 
