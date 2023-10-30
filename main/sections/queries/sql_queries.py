@@ -12,10 +12,7 @@ The basis for all queries are the cleaned data in the table "in_out":
 Each query produces extra data; take a look at each individual one for details
 """
 
-from solution_config import START_DATE, END_DATE, MINIMAL_BREAK_IN_SEC
 
-
-  
 ############################
 ### Intermediate queries ###
 ############################
@@ -47,8 +44,8 @@ AS WITH lagged_eventsCTE AS
                                                                                  ORDER BY event_time)
                                                                                  ) AS event_type_duration
    FROM in_out
-   WHERE event_time >= '{}'
-     AND event_time <= '{}' )
+   WHERE event_time >= '2023-02-01'
+     AND event_time <= '2023-02-29' )
 SELECT user_id,
        sum(event_type_duration) AS total_time_in_office
 FROM lagged_eventsCTE
@@ -56,7 +53,7 @@ WHERE event_type IS 'GATE_OUT'
 GROUP BY user_id
 ORDER BY total_time_in_office DESC
 
-""".format(START_DATE, END_DATE)
+"""
 
 
 DAYS_IN_OFFICE = """
@@ -77,10 +74,10 @@ FROM
   (SELECT DISTINCT user_id ,
                    substr(event_time, 1, 10) AS days_in_office
    FROM in_out
-   WHERE event_time >= '{}'
-     AND event_time <= '{}' )
+   WHERE event_time >= '2023-02-01'
+     AND event_time <='2023-02-29' )
 GROUP BY user_id
-""".format(START_DATE, END_DATE)
+"""
 
 
 SESSION_VS_BREAK = """
@@ -104,7 +101,7 @@ SELECT * ,
        CASE
            WHEN event_type IS 'GATE_OUT' THEN 'session'
            WHEN event_type IS 'GATE_IN'
-                AND the_dif < {} THEN 'session'
+                AND the_dif < 7200 THEN 'session'
            ELSE 'break'
        END AS session_identification
 FROM
@@ -116,9 +113,9 @@ FROM
                                       strftime('%s', event_time) - strftime('%s', lag (event_time, 1, 0) OVER (PARTITION BY user_id
                                                                                                                ORDER BY event_time)) AS the_dif
    FROM in_out
-   WHERE event_time >= '{}'
-     AND event_time <= '{}') lagged
-""".format(MINIMAL_BREAK_IN_SEC, START_DATE, END_DATE)
+   WHERE event_time >= '2023-02-01'
+     AND event_time <='2023-02-29') lagged
+"""
 
 
 ############################
@@ -233,10 +230,147 @@ FROM
                                ELSE 'Saturday'
                            END AS weekday
       FROM in_out
-      WHERE event_time >= '{}'
-        AND event_time <= '{}' )
+      WHERE event_time >= '2023-02-01'
+        AND event_time <='2023-02-29' )
    GROUP BY weekday,
             event_date)
 GROUP BY weekday
 ORDER BY weekday_int
-""".format(START_DATE, END_DATE)
+"""
+
+FOURTH_ANSWER_QUERY = """
+/* 
+CONTEXT: 
+- This is answer4, the maximum ever employee presence in office for each day of the week, for each hour band
+RETURNS: ( iterator with length up to 7 (as days of week))
+- weekday: string, Monday to Sunday
+- (multiple columns): from 7:00 to 22:00
+MECHANISM:
+- From the SESSION_VS_BREAK, where we have the lagged data, we compute, 
+    for each hour from 7:00 to 22:00 whether the employee was in the office
+- then we group for each daily date and we compute how many employees were in the office for each hour band
+- and finally we group for each weekday and get the maximum presence ever in the office for each hour band
+*/
+SELECT weekday ,
+       MAX(seven_AM) AS seven_AM ,
+       MAX(eight_AM) AS eight_AM ,
+       MAX(nine_AM) AS nine_AM ,
+       MAX(ten_AM) AS ten_AM ,
+       MAX(eleven_AM) AS eleven_AM ,
+       MAX(twelve_NOON) AS twelve_NOON ,
+       MAX(one_PM) AS one_PM ,
+       MAX(two_PM) AS two_PM ,
+       MAX(three_PM) AS three_PM ,
+       MAX(four_PM) AS four_PM ,
+       MAX(five_PM) AS five_PM ,
+       MAX(six_PM) AS six_PM ,
+       MAX(seven_PM) AS seven_PM ,
+       MAX(eight_PM) AS eight_PM ,
+       MAX(nine_PM) AS nine_PM ,
+       MAX(ten_PM) AS ten_PM
+FROM
+  (SELECT user_id ,
+          event_type ,
+          event_time ,
+          lagged_time ,
+          strftime("%Y-%m-%d", lagged_time) AS daily_date ,
+          CASE CAST (strftime('%w', event_time) AS integer)
+              WHEN 0 THEN 'Sunday'
+              WHEN 1 THEN 'Monday'
+              WHEN 2 THEN 'Tuesday'
+              WHEN 3 THEN 'Wednesday'
+              WHEN 4 THEN 'Thursday'
+              WHEN 5 THEN 'Friday'
+              ELSE 'Saturday'
+          END AS weekday ,
+          CAST (strftime('%w', event_time) AS integer) AS weekday_int ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 7
+                            AND 7 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS seven_AM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 8
+                            AND 8 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS eight_AM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 9
+                            AND 9 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS nine_AM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 10
+                            AND 10 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS ten_AM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 11
+                            AND 11 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS eleven_AM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 12
+                            AND 12 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS twelve_NOON ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 13
+                            AND 13 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS one_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 14
+                            AND 14 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS two_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 15
+                            AND 15 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS three_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 16
+                            AND 16 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS four_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 17
+                            AND 17 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS five_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 18
+                            AND 18 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS six_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 19
+                            AND 19 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS seven_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 20
+                            AND 20 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS eight_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 21
+                            AND 21 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS nine_PM ,
+               sum(CASE
+                       WHEN CAST(strftime("%H", lagged_time) AS INT) <= 22
+                            AND 22 <= CAST(strftime("%H", event_time) AS INT) THEN 1
+                       ELSE 0
+                   END) AS ten_PM
+   FROM session_vs_break
+   WHERE event_type IS 'GATE_OUT'
+   AND event_time >= '2023-02-01'
+   AND event_time <= '2023-02-29'
+
+   GROUP BY daily_date)
+GROUP BY weekday
+ORDER BY weekday_int
+
+"""

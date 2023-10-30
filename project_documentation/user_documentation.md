@@ -97,8 +97,6 @@ You can simply change the input file and compute the solution for the new file. 
 There are three kinds of parameters that a user can change:
 
 - 1. The locations of the input data and output folder
-- 2. The start and end date for the period under examination - the default is from the start to the end of February 2023
-- 3. The maximum duration of being outside of the office, without breaking a work session - the default is two (2) hours or 7200 seconds as it is used internally.
 
 In the folder 
 
